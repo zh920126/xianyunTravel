@@ -1,8 +1,24 @@
 <template>
   <div>
+    <Header></Header>
     <nuxt />
+    <Footer></Footer>
   </div>
 </template>
+
+<script>
+//引入头部公共部分
+import Header from '@/components/header.vue'
+//引入页脚公共组件
+import Footer from '@/components/footer.vue'
+
+export default {
+  components: {
+    //注册组件
+    Header,Footer
+  }
+}
+</script>
 
 <style>
 html {
@@ -51,5 +67,16 @@ html {
 .button--grey:hover {
   color: #fff;
   background-color: #35495e;
+}
+/* 添加初始化样式 */
+html,body,div,h1,h2,h3,h4,h5,h6,span,a,img,p,em,i{
+  margin: 0;
+  padding: 0;
+  color: #666;
+}
+a{
+  display: block;
+  text-decoration: none;
+  color: #666
 }
 </style>
