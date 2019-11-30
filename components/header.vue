@@ -1,6 +1,6 @@
 <template>
   <div class="header">
-    <div class="container">
+    <div class="header-con">
       <div class="box">
         <!-- Logo部分 -->
         <el-row>
@@ -31,7 +31,9 @@
                 placement="bottom"
               >
               <!-- <i class="el-icon-bell"></i> -->
-              <span class="el-icon-bell">消息</span>
+              <span class="el-icon-bell">消息
+                <i class=" el-icon-caret-bottom"></i>
+              </span>
               </el-tooltip>
             </div>
           </span>
@@ -50,12 +52,13 @@ export default {};
 .header {
   height: 70px;
   border-bottom: 1px solid #ddd;
-  .container {
+  .header-con {
     position: relative;
+    height: 70px;
     width: 1000px;
     margin: 0 auto;
     .box {
-      height: 75px;
+      height: 70px;
     }
     div {
       float: left;
@@ -82,8 +85,10 @@ export default {};
         font-size: 16px;
         box-sizing: border-box;
         &:hover {
+          box-sizing: border-box;
+          padding: 20px;
           color: #409eff;
-          border-bottom: 5px solid #409eff;
+          border-bottom: 4px solid #409eff;
         }
         &:focus {
           background-color: #409eff;

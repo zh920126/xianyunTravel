@@ -69,7 +69,7 @@ html {
   background-color: #35495e;
 }
 /* 添加初始化样式 */
-html,body,div,h1,h2,h3,h4,h5,h6,span,a,img,p,em,i{
+html,body,div,h1,h2,h3,h4,h5,h6,span,a,img,p,input,em,i{
   margin: 0;
   padding: 0;
   color: #666;
@@ -78,5 +78,22 @@ a{
   display: block;
   text-decoration: none;
   color: #666
+}
+input{
+  outline: none;
+}
+*{
+  margin:0; 
+  padding:0;
+}
+ul, li, ol{
+  list-style:none;
+}
+a{
+  text-decoration:none;
+  color:inherit;
+}
+em,i{
+  font-style: normal;
 }
 </style>
