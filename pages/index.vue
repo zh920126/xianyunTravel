@@ -15,8 +15,9 @@
     <!-- 搜索框 -->
     <div class="search">
         <span v-for="(value,index) in options" :key="index" :class="{white:currentOptions===index}" @click="handlerOptions(index)">{{value.title}}</span>
-        <input type="text" :placeholder="options[currentOptions].placeholder"/>
-        <i class="el-icon-search icon-search"></i>
+        <input type="text" :placeholder="options[currentOptions].placeholder" v-model="searchInfo"/>
+        <!-- 点击搜索图标时触发事件 -->
+        <i class="el-icon-search icon-search" @click="handleSearch"></i>
     </div>
   </div>
 </template>
@@ -26,6 +27,8 @@
 export default {
   data() {
     return {
+      //定义变量来获取用户输入的搜索关键字
+      searchInfo:'',
       //定义变量用来当点击搜索框上的类型时，发生变化
       currentOptions:0,
       //定义变量用来接收轮播图的图片
@@ -60,7 +63,37 @@ export default {
   methods: {
     //当点击搜索类型时，将对应的索引值赋值给定义的变量，用来改变背景颜色
     handlerOptions(index){
-      this.currentOptions=index
+      //需要对index进行判断，如果是点击的机票就直接跳转到飞机票页面
+      if(index===2){
+        this.$router.push('/air')
+      }else{
+         this.currentOptions=index
+      }
+    },
+    //搜索
+    handleSearch(){
+      //点击搜索时，需要按照搜索的类别来进行跳转到对应类目的页面
+      if(this.currentOptions===0){
+        if(this.searchInfo.trim('')!==''){
+          // console.log(123);
+          //当用户输入城市后进行跳转
+          this.$router.push('/post')
+        }else{
+          //当搜索的数据为空时，提示用户需要输入搜索关键字才能搜索
+          this.$message.warning('请输入想搜索的城市')
+        }
+      }
+      if(this.currentOptions===1){
+        if(this.searchInfo.trim('')!==''){
+          // console.log(123);
+          //当用户输入城市后进行跳转
+          this.$router.push('/hotel')
+        }else{
+          //当搜索的数据为空时，提示用户需要输入搜索关键字才能搜索
+          this.$message.warning('请输入城市来获取酒店信息')
+        }
+      }
+      
     }
   }
 };

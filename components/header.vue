@@ -37,7 +37,20 @@
               </el-tooltip>
             </div>
           </span>
-          <nuxt-link to="/login" class="register">登录/注册</nuxt-link>
+          <nuxt-link to="/user/login" class="register" v-if="0">登录/注册</nuxt-link>
+          <div class="has_login" v-if="1">
+            <el-dropdown>
+              <span class="el-dropdown-link">
+                <img src="https://ss1.baidu.com/70cFfyinKgQFm2e88IuM_a/forum/pic/item/58ee3d6d55fbb2fbcff3cf00474a20a44723dccc.jpg" alt="">
+                <span>用户名</span>
+                <i class="el-icon-caret-bottom el-icon--right"></i>
+              </span>
+              <el-dropdown-menu slot="dropdown">
+                <el-dropdown-item>个人中心</el-dropdown-item>
+                <el-dropdown-item>退出</el-dropdown-item>
+              </el-dropdown-menu>
+            </el-dropdown>
+          </div>
         </div>
       </div>
     </div>
@@ -112,6 +125,18 @@ export default {};
         }
       }
     }
+  }
+}
+.has_login{
+  img{
+    width: 40px;
+    border-radius: 50%;
+    // width: 100%;
+    vertical-align: middle;
+  }
+  span{
+    padding: 0px 0px 0px 10px;
+    margin: 0px!important;
   }
 }
 </style>
