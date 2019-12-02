@@ -1,5 +1,6 @@
 <template>
   <div class="container">
+    <!-- <div>{{$store.state.user.userMessage.token}}</div> -->
     <!-- 幻灯片 -->
     <el-carousel :interval="5000" arrow="always">
       <el-carousel-item v-for="(item, index) in banners" :key="index">
@@ -57,8 +58,12 @@ export default {
     let res = await this.$axios({
       url: "/scenics/banners"
     });
-    console.log(res);
+    // console.log(res);
     this.banners = res.data.data;
+    //试验vuex
+    // setTimeout(() => {
+    //   this.$store.commit("user/setUserMessage","121313")
+    // }, 1000);
   },
   methods: {
     //当点击搜索类型时，将对应的索引值赋值给定义的变量，用来改变背景颜色

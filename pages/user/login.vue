@@ -133,6 +133,8 @@ export default {
             data:this.userInfo
           }).then(res=>{
             console.log(res);
+            //登录成功之后需要将数据存储到vuex中
+            this.$store.commit('user/setUserMessage',res.data)
             //提示用户登录成功
             this.$message.success('登录成功，正在为您跳转')
             //进行跳转
@@ -140,7 +142,7 @@ export default {
               this.$router.replace('/')
             }, 1000);
             //当用户登录成功之后，需要将生成的token以及用户的信息储存到vuex中
-            this.$store.commit("user/userMessage",res)
+            // this.$store.commit("user/userMessage",res)
           })
         }
       })

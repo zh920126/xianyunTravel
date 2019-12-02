@@ -37,12 +37,12 @@
               </el-tooltip>
             </div>
           </span>
-          <nuxt-link to="/user/login" class="register" v-if="0">登录/注册</nuxt-link>
-          <div class="has_login" v-if="1">
+          <nuxt-link to="/user/login" class="register" v-if="!$store.state.user.userMessage.token">登录/注册</nuxt-link>
+          <div class="has_login" v-if="$store.state.user.userMessage.token">
             <el-dropdown>
               <span class="el-dropdown-link">
-                <img src="https://ss1.baidu.com/70cFfyinKgQFm2e88IuM_a/forum/pic/item/58ee3d6d55fbb2fbcff3cf00474a20a44723dccc.jpg" alt="">
-                <span>用户名</span>
+                <img :src="$axios.defaults.baseURL+$store.state.user.userMessage.user.defaultAvatar" alt="">
+                <span>{{$store.state.user.userMessage.user.nickname}}</span>
                 <i class="el-icon-caret-bottom el-icon--right"></i>
               </span>
               <el-dropdown-menu slot="dropdown">
@@ -58,7 +58,8 @@
 </template>
 
 <script>
-export default {};
+export default {
+};
 </script>
 
 <style lang="less" scoped>
