@@ -1,6 +1,7 @@
 <template>
   <div class="header">
     <div class="header-con">
+      <!-- <div>{{$store.state.user.userMessage.token}}</div> -->
       <div class="box">
         <!-- Logo部分 -->
         <el-row>

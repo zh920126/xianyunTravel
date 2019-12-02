@@ -9,11 +9,33 @@ export const state=()=>({
   }
 })
 //vuex里面的数据改变需要使用函数来改变，不能直接使用赋值//mutations用来改变数据参数
-//
+//!!!注意 mutations只能接受同步代码
 export const mutations= {
   //mutations里面的每一个属性都是一个函数
   //有两个参数，第一个是我们的状态对象 state 第二个是我们需要改变的数据
   setUserMessage(state,data){
     state.userMessage=data
+  }
+}
+
+//actions能支持异步的代码，异步的代码比如axios只能使用actions
+export const actions= {
+  //里面每一个属性都是一个函数
+  //里面有两个参数 第一个参数是commit，第二个是数据
+  login({commit},data){
+    //因为vuex里面不能进行路由的跳转，所以必须返回数据，在vue组件中进行判定之后再进行下一步的操作
+    return this.$axios({
+      method:'post',
+      url:'/accounts/login',
+      data
+    }).then(res=>{
+      console.log(res);
+      //登录成功之后需要将数据存储到vuex中
+      commit('setUserMessage',res.data)
+      //需要返会数据，在vue组件中进行验证，然后提示用户以及路由的跳转
+      return res.data
+    }).catch(err=>{
+      
+    })
   }
 }

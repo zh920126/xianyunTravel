@@ -127,22 +127,19 @@ export default {
         if(valid){
           // console.log(123);
           //当validate验证通过后进行用户登录请求发送
-          this.$axios({
-            method:'post',
-            url:'/accounts/login',
-            data:this.userInfo
-          }).then(res=>{
+          //使用vuex的actions替换这里的axios登录
+          this.$store.dispatch('user/login',this.userInfo).then(res=>{
             console.log(res);
-            //登录成功之后需要将数据存储到vuex中
-            this.$store.commit('user/setUserMessage',res.data)
-            //提示用户登录成功
-            this.$message.success('登录成功，正在为您跳转')
-            //进行跳转
-            setTimeout(() => {
+            //必须接收返回值，然后对返回值进行验证，如果有返回值，表示登录成功
+            if(res.token){
+              //登录成功之后提示用户
+              this.$message.success('登录成功，正在为您跳转')
+              //进行路由的跳转
               this.$router.replace('/')
-            }, 1000);
-            //当用户登录成功之后，需要将生成的token以及用户的信息储存到vuex中
-            // this.$store.commit("user/userMessage",res)
+            }
+          }).catch(err=>{
+            //登录失败提示用户
+            this.$message.warning('用户名或密码错误，请重新登录')
           })
         }
       })
