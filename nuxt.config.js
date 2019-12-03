@@ -35,8 +35,9 @@ export default {
   /*
   ** Plugins to load before mounting the App
   */
-  plugins: [
-    '@/plugins/element-ui',
+ plugins: [
+  '@/plugins/axios',
+  '@/plugins/element-ui',
     //需要添加插件vuex-persistedstate插件，来将token数据存储到本地存储中去
     { src: '@/plugins/localStorage', ssr: false }
   ],

@@ -106,4 +106,20 @@ em,i{
 .clearfix{
   *zoom: 1;
 }
+@font-face {
+  font-family: 'iconfont';
+  src: url('../static/font_m8q05617nri/iconfont.eot');
+  src: url('../static/font_m8q05617nri/iconfont.eot?#iefix') format('embedded-opentype'),
+      url('../static/font_m8q05617nri/iconfont.woff2') format('woff2'),
+      url('../static/font_m8q05617nri/iconfont.woff') format('woff'),
+      url('../static/font_m8q05617nri/iconfont.ttf') format('truetype'),
+      url('../static/font_m8q05617nri/iconfont.svg#iconfont') format('svg');
+}
+.iconfont {
+  font-family: "iconfont" !important;
+  font-size: 16px;
+  font-style: normal;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
 </style>

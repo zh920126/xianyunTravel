@@ -37,18 +37,18 @@
             <!-- 用户注册的手机号 -->
             <el-input v-model="userRegisterInfo.username" placeholder="用户名/手机号"></el-input>
           </el-form-item>
-          <el-form-item prop="registerCode" class="regCode">
+          <el-form-item prop="captcha" class="regCode">
             <!-- 用户注册的手机号 -->
-            <el-input v-model="userRegisterInfo.registerCode" placeholder="验证码" class="registerCode"></el-input>
-            <span class="getRes">发送验证码</span>
+            <el-input v-model="userRegisterInfo.captcha" placeholder="验证码" class="registerCode"></el-input>
+            <span class="getRes" @click="handleRegCode">发送验证码</span>
           </el-form-item>
           <el-form-item prop="nickname">
             <!-- 用户注册的昵称 -->
-            <el-input v-model="userRegisterInfo.nickname" placeholder="你的昵称"></el-input>
+            <el-input v-model="userRegisterInfo.nickname" placeholder="你的昵称" type="text"></el-input>
           </el-form-item>
           <el-form-item prop="password">
             <!-- 用户注册的密码 -->
-            <el-input v-model="userRegisterInfo.password" placeholder="密码" type="pssword"></el-input>
+            <el-input v-model="userRegisterInfo.password" placeholder="密码" type="password"></el-input>
           </el-form-item>
           <el-form-item prop="confrimpassword">
             <!-- 重复密码 -->
@@ -101,25 +101,89 @@ export default {
             message:'请输入3-16位的密码',
             trigger:'blur'
           }
+        ],
+        registerCode:[
+           {
+            required:true,
+            message:'请输入验证码',
+            trigger:'blur'
+          },
+          {
+            min:6,max:6,
+            message:'请输入正确的验证码',
+            trigger:'blur'
+          }
+        ],
+        nickname:[
+          {
+            required:true,
+            message:'请输入昵称',
+            trigger:'blur'
+          }
+        ],
+        confrimpassword:[
+          {
+            required:true,
+            message:'请重复密码',
+            trigger:'blur'
+          },
+          {
+            min:3,max:16,
+            message:'请输入3-16位的密码',
+            trigger:'blur'
+          }
         ]
       },
       //定义注册用户信息时获取数据
       userRegisterInfo:{
-        username:'',
-        registerCode:'',
+        username:'13111111111',
+        captcha:'',
         nickname:'',
         password:'',
         confrimpassword:'',
-      }
+      },
+      //定义变量来存储发送给用户的验证码
+      code:'',
     };
   },
   methods: {
+    //点击按钮时发送验证码
+    handleRegCode(){
+      //获取验证码之前先对手机号码进行验证
+      if(!this.userRegisterInfo.username.trim()){
+        //当用户未输入手机号码时，进行提示
+        this.$message.warning('请输入手机号')
+        return false
+      }else if(/^1[34578]\d{9}$/.test(this.userRegisterInfo.username)){
+        //当用户输入正确的手机号码时，发送axios请求，获取验证码
+        this.$axios({
+          method:'post',
+          url:"/captchas",
+          data:{tel:this.userRegisterInfo.username}
+        }).then(res=>{
+          console.log(res);
+          this.$message.success('你的验证码是'+res.data.code)
+          // this.$alert(res.data.code,'恭喜你，你的验证码是')
+          //同时将用户获取到的验证码存储起来
+          // console.log(123);
+          this.code=res.data.code
+          console.log(this.code);
+        }).catch(err=>{
+          //验证码发送失败时，提示用户
+          // this.$message.warning('验证码发送失败，请重试')
+        })
+      }else{
+        //当用户输入的手机号，不是正确的11位数时，提示用户
+        this.$message.warning('请输入正确的手机号')
+        return false
+      }
+    },
     //点击时，产生高亮，同时改变login框的页面效果
     handleChose(index){
       //将对应 的index的值赋值给对应的切换类的变量
       this.currentLogin=index
-      console.log(this.currentLogin);
-      console.log(123);
+      // console.log(this.currentLogin);
+      // console.log(123);
     },
     handleLogin(){
       //使用element-ui表单验证对用户输入的账号密码进行验证
@@ -146,7 +210,39 @@ export default {
     },
     //点击注册按钮，注册新用户
     handleRegister(){
-      console.log(this.userRegisterInfo);
+      // console.log(this.userRegisterInfo);
+      //准备数据，将userRedsgisterInfo的最后一项删除
+      //点击注册时，先使用element-ui的表单验证方法对表单数据进行验证
+      this.$refs.userRegisterInfo.validate(valid=>{
+        if(valid){
+          //当表单内的数据验证成功之后，发起axios请求，进行新用户的注册
+        //  当两次密码不一致时，不能提交并返回提示用户
+        if(this.userRegisterInfo.password!==this.userRegisterInfo.confrimpassword){
+          this.$message.warning('两次输入的密码不一致，请确认')
+          return false
+        }
+        //输入的验证码和系统发送的验证码不一致时，返回并提示用户
+        if(this.userRegisterInfo.captcha!==this.code){
+          this.$message.warning('验证码错误，请重新输入')
+          return false
+        }
+        //改造数据，最后一项重复密码的数据不需要
+        // delete this.userRegisterInfo.confrimpassword
+         delete this.userRegisterInfo.confrimpassword
+        //当上述验证通过之后，发送ajax请求注册新用户
+        this.$axios({
+          method:'post',
+          url:'/accounts/register',
+          data:this.userRegisterInfo
+        }).then(res=>{
+          console.log(res);
+          //提示用户注册成功
+          this.$message.success('恭喜你，注册成功')
+          //登录成功之后跳转到登录界面进行登录
+          this.currentLogin=0
+        })
+        }
+      })
     }
   }
 };
@@ -219,6 +315,7 @@ export default {
     border: 1px solid #dcdfe6;
     border-radius: 5px;
     background-color: #f5f7fa;
+    cursor: pointer;
   }
   }
   .registerBotton{

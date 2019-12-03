@@ -15,6 +15,16 @@ export const mutations= {
   //有两个参数，第一个是我们的状态对象 state 第二个是我们需要改变的数据
   setUserMessage(state,data){
     state.userMessage=data
+  },
+  //创建清理数据的函数，用来实现退出功能
+  clearUserMessage(state){
+    //清空vuex中的state的数据
+    state.userMessage={
+      token:'',
+      user:{}
+    }
+    //同时清空利用插件存储到本地储存中的vuex数据
+    localStorage.removeItem('store')
   }
 }
 

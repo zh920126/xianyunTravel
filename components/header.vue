@@ -47,8 +47,12 @@
                 <i class="el-icon-caret-bottom el-icon--right"></i>
               </span>
               <el-dropdown-menu slot="dropdown">
-                <el-dropdown-item>个人中心</el-dropdown-item>
-                <el-dropdown-item>退出</el-dropdown-item>
+                <el-dropdown-item>
+                  <div @click="handleUserCenter">个人中心</div>
+                </el-dropdown-item>
+                <el-dropdown-item>
+                  <div @click="handleLogout">退出</div>
+                </el-dropdown-item>
               </el-dropdown-menu>
             </el-dropdown>
           </div>
@@ -60,6 +64,18 @@
 
 <script>
 export default {
+  methods: {
+    //点击按钮时，退出所登录的用户，同时销毁该用户的数据
+    handleLogout(){
+      //调用vuex的store中的mutations
+      console.log(123);
+      this.$store.commit('user/clearUserMessage')
+    },
+    //点击跳转个人中心页面
+    handleUserCenter(){
+
+    }
+  }
 };
 </script>
 
