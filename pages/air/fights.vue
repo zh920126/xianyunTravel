@@ -2,23 +2,23 @@
   <div class="container clearfix">
     <div class="left">
       <!-- 引入头部组件 -->
-      <FightsHeader></FightsHeader>
-      <fightsMessage></fightsMessage>
+      <FightsHeader />
+      <fightsMessage :flight="item" v-for="(item, index) in dataList" :key="index" />
     </div>
     <div class="right clearfix">
       <div class="clearfix">
         <div class="renz">
-        <span class="iconfont">&#xe79f;</span>
-        <span>航协认证</span>
-      </div>
-      <div class="promise">
-        <span class="iconfont">&#xe60d;</span>
-        <span>出行保证</span>
-      </div>
-      <div class="call">
-        <span class="iconfont">&#xe60c;</span>
-        <span>7X24</span>
-      </div>
+          <span class="iconfont">&#xe79f;</span>
+          <span>航协认证</span>
+        </div>
+        <div class="promise">
+          <span class="iconfont">&#xe60d;</span>
+          <span>出行保证</span>
+        </div>
+        <div class="call">
+          <span class="iconfont">&#xe60c;</span>
+          <span>7X24</span>
+        </div>
       </div>
       <p>免费客服电话：4006345678转2</p>
     </div>
@@ -26,13 +26,35 @@
 </template>
 
 <script>
-//引入飞机票页面的头部组件
+// 引入飞机票页面的头部组件
 import FightsHeader from '../../components/air/fightsHeader.vue'
 import fightsMessage from '../../components/air/fightsMessage.vue'
 export default {
   components: {
-    //组件组件
-    FightsHeader,fightsMessage
+    // 组件组件
+    FightsHeader, fightsMessage
+  },
+  data () {
+    return {
+      flightsData: {}, // 航班总数据
+      dataList: [] // 航班列表数据，用来渲染页面
+    }
+  },
+  // 使用钩子函数获取所有的航班信息
+  mounted () {
+    // console.log(this.$route.query);
+    // 对于路由,两种参数分别是 params 和 query
+    // 对于 axios 两种参数分别是 data 和 params
+
+    this.$axios({
+      url: '/airs',
+      // 参数可以通过 this.$route.query
+      // 这里面数据本来就是一个对象,所以无需自己拼接
+      params: this.$route.query
+    }).then((res) => {
+      this.flightsData = res.data
+      this.dataList = this.flightsData.flights
+    })
   }
 }
 </script>
