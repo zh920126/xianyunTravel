@@ -39,17 +39,14 @@
     </div>
     <!-- 底部图片栏 -->
     <div class="pics clearfix">
-      <div class="pic">
-         <a href="http://www.baidu.com"><img src="https://ss3.bdstatic.com/70cFv8Sh_Q1YnxGkpoWK1HF6hhy/it/u=4121236200,1201346551&fm=26&gp=0.jpg" alt=""></a>
-      </div>
-      <div class="pic">
-         <a href="http://www.baidu.com"><img src="https://ss3.bdstatic.com/70cFv8Sh_Q1YnxGkpoWK1HF6hhy/it/u=4121236200,1201346551&fm=26&gp=0.jpg" alt=""></a>
-      </div>
-      <div class="pic">
-         <a href="http://www.baidu.com"><img src="https://ss3.bdstatic.com/70cFv8Sh_Q1YnxGkpoWK1HF6hhy/it/u=4121236200,1201346551&fm=26&gp=0.jpg" alt=""></a>
-      </div>
-      <div class="pic">
-         <a href="http://www.baidu.com"><img src="https://ss3.bdstatic.com/70cFv8Sh_Q1YnxGkpoWK1HF6hhy/it/u=4121236200,1201346551&fm=26&gp=0.jpg" alt=""></a>
+      <div class="pic" v-for="(value,index) in discountedTicket" :key="index">
+        <!-- 在此处跳转的路由当中进行路由参数的拼接 -->
+         <a :href="`/air/fights?departCity=${value.departCity}&departCode=${value.departCode}&destCity=${value.destCity}&destCode=${value.destCode}&departDate=${value.departDate}`"><img :src="value.cover" alt="">
+         <div class="description">
+           <span>{{value.departCity}}-{{value.destCity}}</span>
+           <span>￥{{value.price}}</span>
+         </div>
+         </a>
       </div>
     </div>
   </div>
@@ -62,7 +59,9 @@ export default {
   data () {
     return {
         //添加变量对点击之后的样式进行切换
-        currentTab:0
+        currentTab:0,
+        //添加变量用来对特价机票栏进行渲染
+        discountedTicket:[]
     }
   },
   components: {
@@ -79,7 +78,17 @@ export default {
           type: 'warning'
         })
     }
+  },
+  mounted () {
+    //当页面刚打开时就使用钩子函数获取特价机票详情进行页面的渲染
+    this.$axios({
+      url:'/airs/sale'
+    }).then(res=>{
+      // console.log(res);
+      this.discountedTicket=res.data.data
+    })
   }
+  
 }
 </script>
 
@@ -199,7 +208,6 @@ export default {
     margin-bottom: 50px;
     padding: 20px;
     border: 1px solid #ddd;
-    box-sizing: border-box;
     .pic{
       float: left;
       width: 225px;
@@ -210,6 +218,22 @@ export default {
       }
       a{
         display: block;
+        position: relative;
+        height: 140px;
+        overflow: hidden;
+        .description{
+          position: absolute;
+          left: 0;
+          bottom: 0;
+          background-color: rgba(0, 0, 0, .4);
+          height: 30px;
+          line-height: 30px;
+          width: 100%;
+          color: #fff;
+          display: flex;
+          justify-content: space-between;
+          padding: 0px 10px;
+        }
         img{
           width: 100%;
           display: block;
