@@ -7,10 +7,10 @@
           <span>/</span>
           <span>2019-12-6</span>
         </div>
-       <!-- <div class="selectflight">
+       <div class="selectflight">
          <el-select v-model="value" style="width:120px" placeholder="起飞机场" size="mini">
           <el-option
-            v-for="item in options"
+            v-for="item in flightselect"
             :key="item.value"
             :label="item.label"
             :value="item.value">
@@ -18,7 +18,7 @@
         </el-select>
          <el-select v-model="value"  style="width:120px" placeholder="起飞时间" size="mini">
           <el-option
-            v-for="item in options"
+            v-for="item in flightselect"
             :key="item.value"
             :label="item.label"
             :value="item.value">
@@ -26,7 +26,7 @@
         </el-select>
          <el-select v-model="value"  style="width:120px" placeholder="航空公司" size="mini">
           <el-option
-            v-for="item in options"
+            v-for="item in flightselect"
             :key="item.value"
             :label="item.label"
             :value="item.value">
@@ -34,13 +34,13 @@
         </el-select>
          <el-select v-model="value"  style="width:120px" placeholder="机型" size="mini">
           <el-option
-            v-for="item in options"
+            v-for="item in flightselect"
             :key="item.value"
             :label="item.label"
             :value="item.value">
           </el-option>
         </el-select>
-       </div> -->
+       </div>
     </div>
     <div class="bottom">
       筛选:
