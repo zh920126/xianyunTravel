@@ -119,6 +119,7 @@ export default {
       }else{
         //当用户不选择建议项的时候，默认给用户的的输入值第一个sort值
       this.airList.departCode=res[0].sort
+      this.airList.destCode=res[0].sort
       callback(res)
       }
     },
