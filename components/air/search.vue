@@ -83,6 +83,8 @@ export default {
         this.$message.warning('请选择航班时间')
         return false
       }
+      //当所有的搜索全部通过之后，将用户搜索的历史数据存到vuex当中去
+      this.$store.commit("history/setUserHistory",this.airList)
       //全部通过验证之后，进行路由跳转
       this.$router.push({
         path:'/air/fights',

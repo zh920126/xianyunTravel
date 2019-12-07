@@ -51,7 +51,7 @@
               ￥{{ item.settle_price_coupon }}
             </el-col>
             <el-col :span="3" class="choose-button">
-              <el-button type="warning" size="mini">
+              <el-button type="warning" size="mini" @click="handleToOrder(item)">
                 选定
               </el-button>
               <p>剩余：83</p>
@@ -75,6 +75,17 @@ export default {
   methods: {
     handleCurrentTab () {
       this.currentTab = !this.currentTab
+    },
+    handleToOrder(item){
+      // //点击选定时，跳转到订单页面
+      console.log(item);
+      this.$router.push({
+        path:'/air/order',
+        query:{
+          id:this.flight.id,
+          seat_xid:item.seat_xid
+        }
+      })
     }
   },
   computed: {

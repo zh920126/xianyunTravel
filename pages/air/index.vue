@@ -41,7 +41,7 @@
     <div class="pics clearfix">
       <div class="pic" v-for="(value,index) in discountedTicket" :key="index">
         <!-- 在此处跳转的路由当中进行路由参数的拼接 -->
-         <a :href="`/air/fights?departCity=${value.departCity}&departCode=${value.departCode}&destCity=${value.destCity}&destCode=${value.destCode}&departDate=${value.departDate}`"><img :src="value.cover" alt="">
+         <a :href="`/air/flights?departCity=${value.departCity}&departCode=${value.departCode}&destCity=${value.destCity}&destCode=${value.destCode}&departDate=${value.departDate}`"><img :src="value.cover" alt="">
          <div class="description">
            <span>{{value.departCity}}-{{value.destCity}}</span>
            <span>￥{{value.price}}</span>
@@ -54,7 +54,7 @@
 
 <script>
 //引入组件
-import Search from '../../components/air/search.vue'
+import Search from '@/components/air/search.vue'
 export default {
   data () {
     return {
