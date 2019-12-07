@@ -43,7 +43,7 @@
           <span>{{value.departCity}} - {{value.destCity}}</span>
           <span>{{value.departDate}}</span>
         </div>
-        <span @click="handlejump(index)">选择</span>
+        <a :href="`/air/flights?departCity=${value.departCity}&departCode=${value.departCode}&destCity=${value.destCity}&destCode=${value.destCode}&departDate=${value.departDate}`">选择</a>
         <span @click="handleRemoveHistory(index)">X</span>
       </div>
     </div>
@@ -223,19 +223,22 @@ export default {
       display: flex;
       padding-top: 10px;
       justify-content: space-between;
-      > span {
+      >a{
         margin-top: 10px;
         cursor: pointer;
         background-color: orange;
-        &:nth-child(2) {
-          margin-left: 50px;
+        margin-left: 50px;
           padding: 0px 10px;
           height: 20px;
           line-height: 20px;
           font-size: 12px;
           color: #fff;
           border-radius: 5px;
-        }
+      }
+      > span {
+        margin-top: 10px;
+        cursor: pointer;
+        background-color: orange;
         &:nth-child(3) {
           padding: 5px;
           height: 20px;

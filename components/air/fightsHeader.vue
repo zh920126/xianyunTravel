@@ -15,6 +15,7 @@ export default {
 
 <style lang="less" scoped>
   .airHead{
+    margin-bottom: 10px;
     width: 745px;
     height: 40px;
     border: 1px solid #ddd;

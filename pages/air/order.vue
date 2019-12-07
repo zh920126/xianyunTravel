@@ -19,5 +19,9 @@ export default {
 </script>
 
 <style>
+.orderList{
+  width: 1000px;
+  margin: 0 auto;
+}
 
 </style>
