@@ -2,22 +2,22 @@
   <div class="aside">
     <!-- 顶部时间项 -->
     <div class="departDate">
-      <span>2019-04-15</span>
-      <span>广州 - 上海</span>
+      <span>{{airsDate.arr_date}}</span>
+      <span>{{airsDate.org_city_name}} - {{airsDate.dst_city_name}}</span>
     </div>
     <!-- 机场与飞行时长项 -->
     <div class="airport">
       <div class="depart">
-        <span>20:30</span>
-        <span>白云机场T1</span>
+        <span>{{airsDate.dep_time}}</span>
+        <span>{{airsDate.org_airport_name}}{{airsDate.org_airport_quay}}</span>
       </div>
       <div class="flightTime">
-        <span>---2时20分---</span>
-        <span>东航MU5316</span>
+        <span>---{{flightTime}}---</span>
+        <span>{{airsDate.airline}}{{airsDate.flight_no}}</span>
       </div>
       <div class="dest">
-        <span>22:50</span>
-        <span>浦东机场T2</span>
+        <span>{{airsDate.arr_time}}</span>
+        <span>{{airsDate.dst_airport_name}}{{airsDate.dst_airport_quay}}</span>
       </div>
     </div>
     <!-- 订单总价 -->
@@ -29,7 +29,7 @@
       </div>
       <div class="ticket">
         <span>成人机票</span>
-        <span>￥1345元</span>
+        <span>￥{{airsDate.seat_infos.par_price}}元</span>
         <span>x1</span>
       </div>
       <div class="fuelOil">
@@ -40,7 +40,7 @@
       <!-- 应付总金额项 -->
       <div class="totalPsrice">
         <span>应付总额:</span>
-        <span>￥2790</span>
+        <span>￥{{totalPrice}}</span>
       </div>
     </div>
   </div>
@@ -48,7 +48,26 @@
 
 <script>
 export default {
-
+  //接收父组件传递过来的数据进行渲染
+  props: ["airsDate","totalPrice"],
+  computed: {
+    //使用计算属性来计算出飞行时长
+    flightTime(){
+      let departTime=this.airsDate.dep_time.split(":")
+      let arrTime=this.airsDate.arr_time.split(":")
+      //将所有的时间数据全部转化为分钟之后进行运算
+      let departSec=departTime[0]*60+(+departTime[1])
+      let destSec=arrTime[0]*60+(+arrTime[1])
+      //使用到达时间减去出发时间，然后转化为小时和分钟，进行显示
+      let flightalltimes=destSec-departSec
+      if(flightalltimes<0){
+        flightalltimes=destSec+24*60-departSec
+      }
+      let hours=Math.floor(flightalltimes/60)
+      let minutes=Math.floor(flightalltimes%60)
+      return hours+"时"+minutes+"分"
+    }
+  }
 }
 </script>
 
