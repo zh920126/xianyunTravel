@@ -61,14 +61,69 @@ export default {
     display: flex;
     justify-content: space-between;
     padding: 15px;
+    span{
+      &:nth-child(1){
+        font-size: 16px;
+      }
+      &:nth-child(2){
+        font-size: 14px;
+      }
+    }
   }
   .airport{
     padding: 0px 15px 15px;
     display: flex;
     justify-content: space-between;
+    border-bottom: 1px dashed #ddd;
     div{
-      width: 33%;
+      width: 33%; 
+      font-size: 12px;
+      color: #999;
+      &:nth-child(1),&:nth-child(3){
+        span{
+          display: block;
+          text-align: left;
+          &:nth-child(1){
+            font-size: 22px;
+            color: #000;
+            margin-bottom: 5px;
+          }
+        }
+      }
+      &:nth-child(2){
+        margin-top: 10px;
+        text-align: center;
+        span{
+          display: block;
+        }
+      }
+      &:nth-child(3){
+        span{
+          text-align: right;
+        }
+      }
+    }
+  }
+  .orderForm{
+    .order,.ticket,.fuelOil{
       display: flex;
+      justify-content: space-between;
+      padding:10px 15px;
+      border-bottom: 1px dashed #ddd;
+      font-size: 14px;
+      color: #666;
+    }
+    .totalPsrice{
+      padding: 20px 15px;
+      display: flex;
+      justify-content: space-between;
+      color: #666;
+      span{
+        &:nth-child(2){
+          font-size: 28px;
+          color: orange;
+        }
+      }
     }
   }
 }
