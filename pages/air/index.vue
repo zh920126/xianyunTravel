@@ -84,7 +84,7 @@ export default {
     this.$axios({
       url:'/airs/sale'
     }).then(res=>{
-      // console.log(res);
+      console.log(res.data);
       this.discountedTicket=res.data.data
     })
   }

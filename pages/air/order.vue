@@ -22,6 +22,7 @@ export default {
 .orderList{
   width: 1000px;
   margin: 0 auto;
+  padding: 20px 0px;
 }
 
 </style>
