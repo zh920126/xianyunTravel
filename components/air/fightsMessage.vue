@@ -14,7 +14,7 @@
               <span>{{ flight.org_airport_name + flight.org_airport_quay }}</span>
             </el-col>
             <el-col :span="8" class="flight-time">
-              <span>{{flightTime}}</span>
+              <span>{{ flightTime }}</span>
             </el-col>
             <el-col :span="8" class="flight-airport">
               <strong>{{ flight.arr_time }}</strong>
@@ -51,7 +51,7 @@
               ￥{{ item.settle_price_coupon }}
             </el-col>
             <el-col :span="3" class="choose-button">
-              <el-button type="warning" size="mini" @click="handleToOrder(item)">
+              <el-button @click="handleToOrder(item)" type="warning" size="mini">
                 选定
               </el-button>
               <p>剩余：83</p>
@@ -72,39 +72,38 @@ export default {
       currentTab: false
     }
   },
+  computed: {
+    // 使用计算属性计算出航班的飞行时间
+    // 将时间全部转化为毫秒后进行运算
+    flightTime () {
+      const departTime = this.flight.dep_time.split(':')
+      const arrTime = this.flight.arr_time.split(':')
+      // 将所有的时间数据全部转化为分钟之后进行运算
+      const departSec = departTime[0] * 60 + (+departTime[1])
+      const destSec = arrTime[0] * 60 + (+arrTime[1])
+      // 使用到达时间减去出发时间，然后转化为小时和分钟，进行显示
+      let flightalltime = destSec - departSec
+      if (flightalltime < 0) {
+        flightalltime = destSec + 24 * 60 - departSec
+      }
+      const hours = Math.floor(flightalltime / 60)
+      const minutes = Math.floor(flightalltime % 60)
+      return hours + '时' + minutes + '分'
+    }
+  },
   methods: {
     handleCurrentTab () {
       this.currentTab = !this.currentTab
     },
-    handleToOrder(item){
+    handleToOrder (item) {
       // //点击选定时，跳转到订单页面
-      console.log(item);
       this.$router.push({
-        path:'/air/order',
-        query:{
-          id:this.flight.id,
-          seat_xid:item.seat_xid
+        path: '/air/order',
+        query: {
+          id: this.flight.id,
+          seat_xid: item.seat_xid
         }
       })
-    }
-  },
-  computed: {
-    //使用计算属性计算出航班的飞行时间
-    //将时间全部转化为毫秒后进行运算
-    flightTime(){
-      let departTime=this.flight.dep_time.split(":")
-      let arrTime=this.flight.arr_time.split(":")
-      //将所有的时间数据全部转化为分钟之后进行运算
-      let departSec=departTime[0]*60+(+departTime[1])
-      let destSec=arrTime[0]*60+(+arrTime[1])
-      //使用到达时间减去出发时间，然后转化为小时和分钟，进行显示
-      let flightalltime=destSec-departSec
-      if(flightalltime<0){
-        flightalltime=destSec+24*60-departSec
-      }
-      let hours=Math.floor(flightalltime/60)
-      let minutes=Math.floor(flightalltime%60)
-      return hours+"时"+minutes+"分"
     }
   }
 }

@@ -87,7 +87,7 @@ export default {
       this.$store.commit("history/setUserHistory",this.airList)
       //全部通过验证之后，进行路由跳转
       this.$router.push({
-        path:'/air/fights',
+        path:'/air/flights',
         query:this.airList
       })
     },
