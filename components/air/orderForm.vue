@@ -151,7 +151,7 @@ export default {
         air: this.$route.query.id,
         captcha: this.captcha
       }
-      console.log(formList)
+      // console.log(formList)
       // 提交前需要对数据进行验证
       // 验证乘机人
       let flag
@@ -226,6 +226,33 @@ export default {
         return false
       }
       // 当所有的信息信息验证成功之后，提交axios请求
+      // 获取token
+      const token = this.$store.state.user.userMessage.token
+      // 如果用户已经登录，就发送axios请求，生成订单
+      if (token) {
+        this.$axios({
+          method: 'post',
+          url: '/airorders',
+          data: formList,
+          // 需要在请求头添加token才能验证成功
+          headers: {
+            Authorization: 'Bearer ' + token
+          }
+        }).then((res) => {
+          console.log(res)
+          // 获取id
+          const id = res.data.id
+          // 提交信息成功之后，需要进行路由的跳转，到付款页面
+          this.$router.push({
+            path: '/air/pay',
+            query: {
+              id
+            }
+          })
+        })
+      } else {
+        this.$router.push('/user/login')
+      }
     }
   }
 }
