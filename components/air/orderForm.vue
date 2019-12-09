@@ -75,12 +75,14 @@ export default {
   props: ['airsDate'],
   data () {
     return {
-      users: [{ username: '', id: '' }],
+      users: [{ username: '123', id: '111111111111111111' }],
       insurances: [],
-      contactName: '',
+      contactName: '111',
       contactPhone: '13012345678',
       invoice: false,
-      captcha: ''
+      captcha: '000000',
+      // 定义变量用来存储用户获取的验证码，用来验证提交信息
+      isCaptcha: ''
     }
   },
   // 通过计算属性得出总价，并传递给父组件
@@ -127,8 +129,10 @@ export default {
         }
       }).then((res) => {
         console.log(res)
+        // 将验证码存起来
+        this.isCaptcha = res.data.code
         // 验证码发送成功之后，提示用户
-        this.$confirm('您的验证码是000000', '提示', {
+        this.$confirm('验证码已发送，请注意查收', '提示', {
           confirmButtonText: '确定',
           showCancelButton: false,
           type: 'warning'
@@ -197,6 +201,31 @@ export default {
         })
         return false
       }
+      // 验证联系人姓名
+      if (!this.contactName) {
+        this.$confirm('请输入联系人姓名', '提示', {
+          confirmButtonText: '提示',
+          showCancelButton: false,
+          type: 'warning'
+        })
+        return false
+      }
+      // 验证用户是否输入了验证码
+      if (!this.captcha) {
+        this.$message.warning('请输入验证码')
+        return false
+      }
+      // 验证验证码格式
+      if (!/^\d{6}$/.test(this.captcha)) {
+        this.$message.warning('请输入正确的验证码格式')
+        return false
+      }
+      // 验证验证码是否和系统传回的验证码一致
+      if (this.isCaptcha !== this.captcha) {
+        this.$message.warning('验证码错误，请重新输入')
+        return false
+      }
+      // 当所有的信息信息验证成功之后，提交axios请求
     }
   }
 }
