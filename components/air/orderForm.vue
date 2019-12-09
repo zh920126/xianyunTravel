@@ -59,7 +59,7 @@
         </el-form-item>
       </el-form>
     </div>
-    <el-button @click="handleSubmitOrder" type="primary" style="width:200px;margin-left:300px">
+    <el-button :disabled="isSending" @click="handleSubmitOrder" type="primary" style="width:200px;margin-left:300px">
       提交订单
     </el-button>
     <!-- 计算和属性必须要被调用才能生效，否则就不会生效 -->
@@ -75,6 +75,7 @@ export default {
   props: ['airsDate'],
   data () {
     return {
+      isSending: false,
       users: [{ username: '123', id: '111111111111111111' }],
       insurances: [],
       contactName: '111',
@@ -225,6 +226,12 @@ export default {
         this.$message.warning('验证码错误，请重新输入')
         return false
       }
+      // 如果验证完防止用户一直点提交按钮，就return
+      if (this.isSending) {
+        return false
+      }
+      // 验证通过发送请求时，为了防止用户一直点，要将按钮变为disabled
+      this.isSending = true
       // 当所有的信息信息验证成功之后，提交axios请求
       // 获取token
       const token = this.$store.state.user.userMessage.token
@@ -239,16 +246,23 @@ export default {
             Authorization: 'Bearer ' + token
           }
         }).then((res) => {
-          console.log(res)
+          // console.log(res)
           // 获取id
-          const id = res.data.id
+          const { id } = res.data.data
+          // console.log(id)
           // 提交信息成功之后，需要进行路由的跳转，到付款页面
+          this.$message.success('订单提交成功，正在跳转')
           this.$router.push({
             path: '/air/pay',
             query: {
               id
             }
           })
+        }).catch((err) => {
+          // 让提交按钮变为可选状态
+          // console.log(err)
+          this.isSending = false
+          this.$message.warning(err.response.data.message)
         })
       } else {
         this.$router.push('/user/login')

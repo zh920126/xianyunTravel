@@ -2,13 +2,13 @@
   <div class="pay">
     <div class="main">
       <div class="top clearfix">
-        <p>支付总金额<span>￥1395.00</span></p>
+        <p>支付总金额<span>￥{{ orderList.price }}.00</span></p>
       </div>
       <div class="payPage">
         <h2>微信支付</h2>
         <div class="mainPage clearfix">
           <div class="qrcode">
-            <canvas style="width:200px;height:200px" />
+            <canvas ref="qrcodeCanvas" style="width:200px;height:200px" />
             <p>请使用微信扫一扫</p>
             <p>扫描二维码支付</p>
           </div>
@@ -22,15 +22,61 @@
 </template>
 
 <script>
+// 引入qrcode二维码生成器
+import Qrcode from 'qrcode'
+
 export default {
+  data () {
+    return {
+      // 定义变量获取数据用于渲染页面
+      orderList: {}
+    }
+  },
+  watch: {
+    // 为了防止页面打开时。token值还没有获取到，所以需要对token进行侦听
+    '$store.state.user.userMessage.token' () {
+      this.getData()
+    }
+  },
   mounted () {
     // 使用钩子函数获取订单的详细信息
-    // 获取订单ID信息
-    const id = this.$route.params.id
-    console.log(id)
-    this.$axios({
-      url: '/airorders/'
-    })
+    console.log(Qrcode)
+    // 获取token
+    const token = this.$store.state.user.userMessage.token
+    // 如果用户已登录就发送请求
+    if (token) {
+      this.getData()
+    }
+  },
+  methods: {
+    getData () {
+      const id = this.$route.query.id
+      console.log(this.$route.query)
+      // 获取token
+      const token = this.$store.state.user.userMessage.token
+      // 如果用户已登录就发送请求
+      if (token) {
+        this.$axios({
+          url: '/airorders/' + id,
+          headers: {
+            Authorization: 'Bearer ' + token
+          }
+        }).then((res) => {
+          console.log(res)
+          // 将获取到的数据赋值给预先定义好的变量
+          this.orderList = res.data
+          // 当数据获取完成之后需要使用Qrcode来生成二维码图片
+          // 要生成二维码就需要两个属性 1.dom 2.支付链接
+          // Qrcode插件 需要使用toCanvas 方法来生生canvas图像
+          // 有四个参数,我们现在只用到3个参数 canvas dom, text(链接), options(选项,现在只用到宽度设置)
+          Qrcode.toCanvas(this.$refs.qrcodeCanvas, this.orderList.payInfo.code_url, {
+            width: 200
+          })
+        }).catch((err) => {
+          console.log(err)
+        })
+      }
+    }
   }
 }
 </script>
