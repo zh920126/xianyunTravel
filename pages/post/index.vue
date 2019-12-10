@@ -8,6 +8,9 @@
     <div class="header">
       <PostHeader />
     </div>
+    <div class="postMain">
+      <PostMain/>
+    </div>
   </div>
 </template>
 
@@ -16,6 +19,8 @@
 import PostAside from "@/components/post/postAside.vue";
 //引入头部组件
 import PostHeader from "@/components/post/postHeader.vue";
+//引入主要内容部分组件
+import PostMain from '@/components/post/postMain.vue'
 export default {
   data() {
     return {};
@@ -23,7 +28,8 @@ export default {
   components: {
     //注册组件
     PostAside,
-    PostHeader
+    PostHeader,
+    PostMain
   },
   mounted() {
     this.$axios({
@@ -44,6 +50,9 @@ export default {
     float: left;
   }
   .header{
+    float: right;
+  }
+  .postMain{
     float: right;
   }
 }
