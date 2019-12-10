@@ -40,7 +40,7 @@ export default {
   },
   mounted () {
     // 使用钩子函数获取订单的详细信息
-    console.log(Qrcode)
+    // console.log(Qrcode)
     // 获取token
     const token = this.$store.state.user.userMessage.token
     // 如果用户已登录就发送请求
@@ -49,9 +49,10 @@ export default {
     }
   },
   methods: {
+    // 封装函数获取数据，并生成二维码
     getData () {
       const id = this.$route.query.id
-      console.log(this.$route.query)
+      // console.log(this.$route.query)
       // 获取token
       const token = this.$store.state.user.userMessage.token
       // 如果用户已登录就发送请求
@@ -65,16 +66,79 @@ export default {
           console.log(res)
           // 将获取到的数据赋值给预先定义好的变量
           this.orderList = res.data
-          // 当数据获取完成之后需要使用Qrcode来生成二维码图片
-          // 要生成二维码就需要两个属性 1.dom 2.支付链接
-          // Qrcode插件 需要使用toCanvas 方法来生生canvas图像
-          // 有四个参数,我们现在只用到3个参数 canvas dom, text(链接), options(选项,现在只用到宽度设置)
-          Qrcode.toCanvas(this.$refs.qrcodeCanvas, this.orderList.payInfo.code_url, {
-            width: 200
-          })
+          // 使用qrcode来生成二维码
+          Qrcode.toCanvas(this.$refs.qrcodeCanvas, this.orderList.payInfo.code_url, { width: 200 })
+          // 生成完二维码之后就需要查询支付状态
+          this.checkStatus()
+          // 当获取数据之后，发送axios请求，获取微信付款的数据
+          // this.$axios({
+          //   method: 'post',
+          //   url: '/airorders/pay',
+          //   data: {
+          //     amount: this.orderList.price,
+          //     order_no: this.orderList.orderNo
+          //   },
+          //   headers: {
+          //     Authorization: 'Bearer ' + token
+          //   }
+          // }).then((res) => {
+          //   console.log(res)
+          //   Qrcode.toCanvas(this.$refs.qrcodeCanvas, res.data.code_url, { width: 200 })
+          // })
         }).catch((err) => {
           console.log(err)
         })
+      }
+    },
+    // 使用轮询查询支付状态
+    checkStatus () {
+      // 发送axios请求来查看支付状态
+      const token = this.$store.state.user.userMessage.token
+      this.$axios({
+        method: 'post',
+        url: '/airorders/checkpay',
+        data: {
+          id: this.orderList.id,
+          nonce_str: this.orderList.price,
+          out_trade_no: this.orderList.orderNo
+        },
+        headers: {
+          Authorization: 'Bearer ' + token
+        }
+      }).then((res) => {
+        console.log(res)
+        // 对返回结果进行判断,如果未支付就需要再次询问
+        if (res.data.trade_state === 'NOTPAY') {
+          // 如果未支付，就需要进行轮询，知道成功为止
+          setTimeout(() => {
+            this.checkStatus()
+          }, 2000)
+        } else {
+          // 除去未支付之外的状态 例如：支付成功获取失败之类
+          // 对各种支付状态进行判定，然后提示用户
+          this.checkPay(res)
+        }
+      })
+    },
+    // 判断函数
+    checkPay (res) {
+      if (res.data.stade_state === 'SUCCESS') {
+        this.$message.success(res.data.statusTxt)
+        // 如果支付成功就需要跳转到首页
+        this.$router.push('/')
+      }
+      // 其他状态跳转到机票搜索页面
+      if (res.data.stade_state === 'CLOSE') {
+        this.$message.warning(res.data.statusTxt)
+        this.$router.push('/air')
+      }
+      if (res.data.stade_state === 'REVOKED') {
+        this.$message.warning(res.data.statusTxt)
+        this.$router.push('/air')
+      }
+      if (res.data.stade_state === 'PAYERROR') {
+        this.$message.warning(res.data.statusTxt)
+        this.$router.push('/air')
       }
     }
   }
