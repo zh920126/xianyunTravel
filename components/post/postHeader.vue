@@ -1,14 +1,29 @@
 <template>
   <div class="postHeader">
     <div class="search">
-      <el-input style="height:36px;" v-model="input" placeholder="请输入内容"></el-input>
+      <el-input v-model="searchData" autofocus placeholder="请输入想去的地方， 比如:'广州'"></el-input>
+      <i class="el-icon-search icon-search"></i>
+    </div>
+    <div class="tuijian">
+      <span>推荐:</span>
+      <a href="javascript:;">广州</a>
+      <a href="javascript:;">上海</a>
+      <a href="javascript:;">北京</a>
+    </div>
+    <div class="strategy">
+      <h2>推荐攻略</h2>
+      <el-button type="primary" icon="el-icon-edit">写游记</el-button>
     </div>
   </div>
 </template>
 
 <script>
 export default {
-
+  data () {
+    return {
+      searchData:''
+    }
+  }
 }
 </script>
 
@@ -16,13 +31,57 @@ export default {
 .postHeader{
  width: 700px;
  .search{
+   position: relative;
    height: 40px;
    border: 3px solid orange;
+   padding-right: 40px;
    .el-input{
-     height: 30px;
-     .el-input-inner{
-       height: 30px;
+     margin-top: 1px;
+     /deep/.el-input__inner{
+       height: 33px;
+       border: none;
      }
+   }
+   .icon-search{
+     position: absolute;
+     top: 0;
+     right: 0;
+     padding: 5px 8px;
+     font-size: 24px;
+     color: orange;
+     font-weight: 600;
+     cursor: pointer;
+   }
+ }
+ .tuijian{
+   display: flex;
+   padding: 10px 0px;
+   font-size: 12px;
+   color: #666;
+   span{
+     margin-right: 10px;
+   }
+   a{
+     margin-right: 5px;
+     &:hover{
+       color: orange;
+       text-decoration: underline;
+     }
+   }
+ }
+ .strategy{
+   height: 50px;
+   display: flex;
+   align-items: center;
+   justify-content: space-between;
+   border-bottom: 1px solid #ddd;
+   h2{
+     font-size: 18px;
+     font-weight: 500;
+     padding-bottom: 12px;
+     padding-top: 12px;
+     color: orange;
+     border-bottom: 2px solid orange;
    }
  }
 }
