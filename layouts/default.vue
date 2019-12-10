@@ -69,7 +69,7 @@ html {
   background-color: #35495e;
 }
 /* 添加初始化样式 */
-html,body,div,h1,h2,h3,h4,h5,h6,span,a,img,p,input,em,i{
+html,body,div,ul,li,ol,dl,h1,h2,h3,h4,h5,h6,span,a,img,p,input,em,i{
   margin: 0;
   padding: 0;
 }
