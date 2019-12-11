@@ -1,8 +1,8 @@
 <template>
   <div class="postHeader">
-    <div class="search">
-      <el-input v-model="searchData" autofocus placeholder="请输入想去的地方， 比如:'广州'"></el-input>
-      <i class="el-icon-search icon-search"></i>
+    <div @keydown.enter="handleSearch" class="search">
+      <el-input v-model="searchData" autofocus placeholder="请输入想去的地方， 比如:'广州'" />
+      <i @click="handleSearch" class="el-icon-search icon-search" />
     </div>
     <div class="tuijian">
       <span>推荐:</span>
@@ -12,16 +12,31 @@
     </div>
     <div class="strategy">
       <h2>推荐攻略</h2>
-      <el-button type="primary" icon="el-icon-edit">写游记</el-button>
+      <el-button type="primary" icon="el-icon-edit">
+        写游记
+      </el-button>
     </div>
   </div>
 </template>
 
 <script>
 export default {
+  // 接收父组件传过来的数据
+  props: ['data'],
   data () {
     return {
-      searchData:''
+      searchData: ''
+    }
+  },
+  methods: {
+    handleSearch () {
+      // 对数据进行筛选
+      const newData = this.data.filter((value) => {
+        if (value.cityName.indexOf(this.searchData)!==-1) {
+          return true
+        }
+      })
+      console.log(newData)
     }
   }
 }

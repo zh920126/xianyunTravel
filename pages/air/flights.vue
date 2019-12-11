@@ -14,10 +14,12 @@
         :current-page="pageIndex"
         :page-sizes="[5, 10, 15, 20]"
         :page-size="pageSize"
-        layout="total, sizes, prev, pager, next, jumper"
         :total="totalPages||0"
-      ></el-pagination>
-      <div class="showNone" v-if="!flightsData.flights.length">没有其他航班信息了</div>
+        layout="total, sizes, prev, pager, next, jumper"
+      />
+      <div v-if="!flightsData.flights.length" class="showNone">
+        没有其他航班信息了
+      </div>
     </div>
     <div class="right clearfix">
       <div class="clearfix">
@@ -38,10 +40,10 @@
     </div>
     <div class="rightbottom">
       <p>历史查询</p>
-      <div class="history" v-for="(value,index) in $store.state.history.userHistory" :key="index">
+      <div v-for="(value,index) in $store.state.history.userHistory" :key="index" class="history">
         <div class="fromTo">
-          <span>{{value.departCity}} - {{value.destCity}}</span>
-          <span>{{value.departDate}}</span>
+          <span>{{ value.departCity }} - {{ value.destCity }}</span>
+          <span>{{ value.departDate }}</span>
         </div>
         <a :href="`/air/flights?departCity=${value.departCity}&departCode=${value.departCode}&destCity=${value.destCity}&destCode=${value.destCode}&departDate=${value.departDate}`">选择</a>
         <span @click="handleRemoveHistory(index)">X</span>
@@ -52,9 +54,9 @@
 
 <script>
 // 引入飞机票页面的头部组件
-import FightsHeader from "@/components/air/fightsHeader.vue";
-import fightsMessage from "@/components/air/fightsMessage.vue";
-import SelectFlight from "@/components/air/selectFlight.vue";
+import FightsHeader from '@/components/air/fightsHeader.vue'
+import fightsMessage from '@/components/air/fightsMessage.vue'
+import SelectFlight from '@/components/air/selectFlight.vue'
 
 export default {
   components: {
@@ -63,9 +65,9 @@ export default {
     fightsMessage,
     SelectFlight
   },
-  data() {
+  data () {
     return {
-      //进行筛选时数据被污染，所以需要重新定义一份数据
+      // 进行筛选时数据被污染，所以需要重新定义一份数据
       flightsData_copy: {
         flights: [],
         info: {},
@@ -77,78 +79,78 @@ export default {
         options: {}
       }, // 航班总数据
       // dataList: [], // 航班列表数据，用来渲染页面
-      pageIndex: 1, //打开页面显示第1页
-      pageSize: 5, //默认每页显示的数据
-      totalPages: "" //总页数
-    };
-  },
-  methods: {
-    handleSizeChange(val) {
-      // console.log(val);
-      //当选择每页的数据条数时，给pagesize重新赋值
-      this.pageSize = val;
-      //同时调用封装的init函数进行数据的获取
-      // this.init()
-    },
-    handleCurrentChange(val) {
-      // console.log(val);
-      //获取当前的页码
-      this.pageIndex = val;
-      //调用封装的函数init进行点击翻页时的数据的获取
-      // this.init()
-    },
-    //将获取页面的数据封装成函数
-    init() {
-      this.$axios({
-        url: "/airs",
-        // 参数可以通过 this.$route.query
-        // 这里面数据本来就是一个对象,所以无需自己拼接
-        params: this.$route.query
-      }).then(res => {
-        // console.log(res);
-        this.flightsData = res.data;
-        //将数据深拷贝一份存起来，用来避免数据的污染
-        this.flightsData_copy = { ...res.data };
-      });
-    },
-    handleFilter(newFlightlist) {
-      // console.log(newFlightlist);
-      this.flightsData.flights = newFlightlist;
-    },
-    //点击历史记录时，进行跳转
-    handlejump(index) {
-      this.$router.push({
-        path: "/air/flights",
-        query: this.$store.state.history.userHistory[index]
-      });
-    },
-    //点击X时，删除掉这条历史记录
-    handleRemoveHistory(index){
-      this.$store.commit('history/DelUserHistory',index)
-    }
+      pageIndex: 1, // 打开页面显示第1页
+      pageSize: 5, // 默认每页显示的数据
+      totalPages: '' // 总页数
+    } 
   },
   computed: {
-    dataList() {
-      //设置分页
-      //开始页面的索引值
-      let start = (this.pageIndex - 1) * this.pageSize;
-      //需要获取数据的条数
-      let end = start + this.pageSize;
-      this.totalPages = this.flightsData.flights.length;
-      console.log(this.totalPages);
-      return this.flightsData.flights.slice(start, end);
+    dataList () {
+      // 设置分页
+      // 开始页面的索引值
+      const start = (this.pageIndex - 1) * this.pageSize
+      // 需要获取数据的条数
+      const end = start + this.pageSize
+      this.totalPages = this.flightsData.flights.length
+      console.log(this.totalPages)
+      return this.flightsData.flights.slice(start, end)
       // //总共数据的条数
     }
   },
   // 使用钩子函数获取所有的航班信息
-  mounted() {
+  mounted () {
     // console.log(this.$route.query);
     // 对于路由,两种参数分别是 params 和 query
     // 对于 axios 两种参数分别是 data 和 params
-    //调用封装的函数进行数据的获取并渲染页面
-    this.init();
+    // 调用封装的函数进行数据的获取并渲染页面
+    this.init()
+  },
+  methods: {
+    handleSizeChange (val) {
+      // console.log(val);
+      // 当选择每页的数据条数时，给pagesize重新赋值
+      this.pageSize = val
+      // 同时调用封装的init函数进行数据的获取
+      // this.init()
+    },
+    handleCurrentChange (val) {
+      // console.log(val);
+      // 获取当前的页码
+      this.pageIndex = val
+      // 调用封装的函数init进行点击翻页时的数据的获取
+      // this.init()
+    },
+    // 将获取页面的数据封装成函数
+    init () {
+      this.$axios({
+        url: '/airs',
+        // 参数可以通过 this.$route.query
+        // 这里面数据本来就是一个对象,所以无需自己拼接
+        params: this.$route.query
+      }).then((res) => {
+        // console.log(res);
+        this.flightsData = res.data
+        // 将数据深拷贝一份存起来，用来避免数据的污染
+        this.flightsData_copy = { ...res.data }
+      })
+    },
+    handleFilter (newFlightlist) {
+      // console.log(newFlightlist);
+      this.flightsData.flights = newFlightlist
+    },
+    // 点击历史记录时，进行跳转
+    handlejump (index) {
+      this.$router.push({
+        path: '/air/flights',
+        query: this.$store.state.history.userHistory[index]
+      })
+    },
+    // 点击X时，删除掉这条历史记录
+    handleRemoveHistory (index) {
+      this.$store.commit('history/DelUserHistory', index)
+    }
   }
-};
+}
 </script>
 
 <style lang="less" scoped>
