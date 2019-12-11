@@ -1,132 +1,21 @@
 <template>
   <div class="postAside">
     <ul class="hotCity">
-      <li class="clearfix">
-        <span>热门城市</span>
-        <i class="el-icon-arrow-right"></i>
+      <li v-for="(value,index) in dataList" :key="index" class="clearfix">
+        <span>{{ value.type }}</span>
+        <i class="el-icon-arrow-right" />
         <ul class="tuijian">
-          <li>
-            <span>1</span>
-            <a href="javascript:;">北京</a>
-            <a href="javascript:;">世界著名古都和现代化国际城市</a>
-          </li>
-          <li>
-            <span>2</span>
-            <a href="javascript:;">广州</a>
-            <a href="javascript:;">粤港澳大湾区、泛珠江三角洲经济区</a>
-          </li>
-          <li>
-            <span>3</span>
-            <a href="javascript:;">上海</a>
-            <a href="javascript:;">长江入海口，东隔东中国海</a>
-          </li>
-          <li>
-            <span>4</span>
-            <a href="javascript:;">成都</a>
-            <a href="javascript:;">国家历史文化名城</a>
-          </li>
-          <li>
-            <span>5</span>
-            <a href="javascript:;">西安</a>
-            <a href="javascript:;">中国国际形象最佳城市之一</a>
-          </li>
-        </ul>
-      </li>
-      <li class="clearfix">
-        <span>推荐城市</span>
-        <i class="el-icon-arrow-right"></i>
-        <ul class="tuijian">
-          <li>
-            <span>1</span>
-            <a href="javascript:;">北京</a>
-            <a href="javascript:;">世界著名古都和现代化国际城市</a>
-          </li>
-          <li>
-            <span>2</span>
-            <a href="javascript:;">广州</a>
-            <a href="javascript:;">粤港澳大湾区、泛珠江三角洲经济区</a>
-          </li>
-          <li>
-            <span>3</span>
-            <a href="javascript:;">上海</a>
-            <a href="javascript:;">长江入海口，东隔东中国海</a>
-          </li>
-          <li>
-            <span>4</span>
-            <a href="javascript:;">成都</a>
-            <a href="javascript:;">国家历史文化名城</a>
-          </li>
-          <li>
-            <span>5</span>
-            <a href="javascript:;">西安</a>
-            <a href="javascript:;">中国国际形象最佳城市之一</a>
-          </li>
-        </ul>
-      </li>
-      <li class="clearfix">
-        <span>奔向海岛</span>
-        <i class="el-icon-arrow-right"></i>
-        <ul class="tuijian">
-          <li>
-            <span>1</span>
-            <a href="javascript:;">北京</a>
-            <a href="javascript:;">世界著名古都和现代化国际城市</a>
-          </li>
-          <li>
-            <span>2</span>
-            <a href="javascript:;">广州</a>
-            <a href="javascript:;">粤港澳大湾区、泛珠江三角洲经济区</a>
-          </li>
-          <li>
-            <span>3</span>
-            <a href="javascript:;">上海</a>
-            <a href="javascript:;">长江入海口，东隔东中国海</a>
-          </li>
-          <li>
-            <span>4</span>
-            <a href="javascript:;">成都</a>
-            <a href="javascript:;">国家历史文化名城</a>
-          </li>
-          <li>
-            <span>5</span>
-            <a href="javascript:;">西安</a>
-            <a href="javascript:;">中国国际形象最佳城市之一</a>
-          </li>
-        </ul>
-      </li>
-      <li class="clearfix">
-        <span>主题推荐</span>
-        <i class="el-icon-arrow-right"></i>
-        <ul class="tuijian">
-          <li>
-            <span>1</span>
-            <a href="javascript:;">北京</a>
-            <a href="javascript:;">世界著名古都和现代化国际城市</a>
-          </li>
-          <li>
-            <span>2</span>
-            <a href="javascript:;">广州</a>
-            <a href="javascript:;">粤港澳大湾区、泛珠江三角洲经济区</a>
-          </li>
-          <li>
-            <span>3</span>
-            <a href="javascript:;">上海</a>
-            <a href="javascript:;">长江入海口，东隔东中国海</a>
-          </li>
-          <li>
-            <span>4</span>
-            <a href="javascript:;">成都</a>
-            <a href="javascript:;">国家历史文化名城</a>
-          </li>
-          <li>
-            <span>5</span>
-            <a href="javascript:;">西安</a>
-            <a href="javascript:;">中国国际形象最佳城市之一</a>
+          <li v-for="(value1,index1) in value.children" :key="index1">
+            <span>{{ index1+1 }}</span>
+            <a href="javascript:;">{{ value1.city }}</a>
+            <a href="javascript:;">{{ value1.desc }}</a>
           </li>
         </ul>
       </li>
     </ul>
-    <h4>推荐城市</h4>
+    <h4>
+      推荐城市
+    </h4>
     <div class="img">
       <a href="javascript:;"><img src="https://dss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=2394972844,3024358326&fm=26&gp=0.jpg" alt=""></a>
     </div>
@@ -134,7 +23,12 @@
 </template>
 
 <script>
-export default {};
+export default {
+  props: ['dataList'],
+  methods: {
+
+  }
+}
 </script>
 
 <style lang="less" scoped>
